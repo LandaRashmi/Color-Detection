@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Detection App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+
+        video {
+            display: block;
+            margin: 0 auto;
+            border: 2px solid #333;
+        }
+
+        #color-info {
+            margin-top: 20px;
+            text-align: center;
+            background-color: white;
+            padding: 10px;
+            border-radius: 8px;
+            width: fit-content;
+        }
+
+        #current-color {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        canvas {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <video id="video" autoplay></video>
+    
+    <div id="color-info">
+        <div id="current-color">Click on the video to detect color</div>
+    </div>
+
+    <canvas id="screenshot-canvas"></canvas>
+
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('screenshot-canvas');
+        const ctx = canvas.getContext('2d');
+        const currentColorText = document.getElementById('current-color');
+        let colorData = [];
+
+        // Load the colors.csv file from the uploaded file
+        fetch('colors.csv')
+            .then(response => response.text())
+            .then(data => {
+                colorData = parseCSV(data);
+            });
+
+        // Function to parse CSV data into a JSON object
+        function parseCSV(data) {
+            const lines = data.split('\n');
+            const result = [];
+            const headers = ['color', 'color_name', 'hex', 'R', 'G', 'B'];
+
+            for (let i = 1; i < lines.length; i++) {
+                const obj = {};
+                const currentline = lines[i].split(',');
+
+                for (let j = 0; j < headers.length; j++) {
+                    obj[headers[j]] = currentline[j];
+                }
+
+                result.push(obj);
+            }
+            return result;
+        }
+
+        // Function to calculate the closest color name
+        function getColorName(R, G, B) {
+            let minimum = 10000;
+            let cname = 'Unknown';
+            colorData.forEach(color => {
+                const d = Math.abs(R - color.R) + Math.abs(G - color.G) + Math.abs(B - color.B);
+                if (d < minimum) {
+                    minimum = d;
+                    cname = `${color.color_name}`;
+                }
+            });
+            return cname;
+        }
+
+        // Setup video stream
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                video.srcObject = stream;
+            });
+
+        // Handle video click to detect color
+        video.addEventListener('click', (event) => {
+            const x = event.offsetX;
+            const y = event.offsetY;
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            const pixel = ctx.getImageData(x, y, 1, 1).data;
+            const R = pixel[0];
+            const G = pixel[1];
+            const B = pixel[2];
+
+            const colorName = getColorName(R, G, B);
+            currentColorText.innerText = colorName;
+
+            document.body.style.backgroundColor = `rgb(${R}, ${G}, ${B})`;
+        });
+    </script>
+</body>
+</html>
+
+
+
