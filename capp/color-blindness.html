@@ -1,6 +1,3 @@
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -111,6 +108,7 @@
                 <option value="deuteranopia">Deuteranopia</option>
                 <option value="protanopia">Protanopia</option>
                 <option value="tritanopia">Tritanopia</option>
+                <option value="monochromatism">Monochromatism</option>
             </select>
             <button onclick="window.location.href='index.html'">Go to Main</button>
         </div>
@@ -137,6 +135,14 @@
                 <div class="explanation-text">
                     <h3>Tritanopia</h3>
                     <p>Tritanopia is a type of blue-yellow color blindness where blue cones are missing. People with tritanopia may confuse blue with green and yellow with violet.</p>
+                </div>
+            </div>
+            <div class="explanation-box">
+                <div class="explanation-text">
+                    <h3>Monochromatism</h3>
+                    <p>Monochromatism, also known as total color blindness, is a rare form of color vision deficiency where an individual perceives only shades of gray, without any ability to distinguish between different colors. 
+                        This condition occurs when all of the cone cells in the retina, which are responsible for color vision, are either absent or non-functional.
+                         People with monochromatism see the world in black, white, and various shades of gray, similar to watching a black-and-white television.</p>
                 </div>
             </div>
         </div>
@@ -182,6 +188,11 @@
                 case 'tritanopia':
                     newRgb = simulateTritanopia(rgb);
                     break;
+                case 'monochromatism':
+                    newRgb = simulateMonochromatism(rgb);
+                    break;
+                default:
+                    newRgb = rgb;
             }
 
             const hex = rgbToHex(newRgb.r, newRgb.g, newRgb.b);
@@ -212,6 +223,17 @@
                 r: 0.95 * rgb.r + 0.05 * rgb.g + 0.0 * rgb.b,
                 g: 0.433 * rgb.r + 0.567 * rgb.g + 0.0 * rgb.b,
                 b: 0.475 * rgb.r + 0.525 * rgb.g + 0.0 * rgb.b
+            };
+        }
+
+        function simulateMonochromatism(rgb) {
+            // Transformation for Monochromatism (grayscale)
+            const grayscaleValue = 0.3 * rgb.r + 0.59 * rgb.g + 0.11 * rgb.b;
+
+            return {
+                r: grayscaleValue,
+                g: grayscaleValue,
+                b: grayscaleValue
             };
         }
 
