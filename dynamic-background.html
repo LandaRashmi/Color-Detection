@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Color Detection App</title>
+    <title>Dynamic Background</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -75,9 +75,16 @@
         canvas {
             display: none;
         }
+
+        #camera-select {
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
+    <select id="camera-select">
+        <option value="">Select Camera</option>
+    </select>
     <video id="video" autoplay></video>
     
     <div id="color-info">
@@ -94,6 +101,7 @@
         const ctx = canvas.getContext('2d');
         const currentColorText = document.getElementById('current-color');
         const colorHistory = document.getElementById('color-history');
+        const cameraSelect = document.getElementById('camera-select');
         let colorData = [];
         let history = [];
 
@@ -177,11 +185,48 @@
             });
         }
 
-        // Setup video stream
-        navigator.mediaDevices.getUserMedia({ video: true })
-            .then(stream => {
-                video.srcObject = stream;
+        // Function to get video devices and populate the camera select
+        async function setupCameraSelect() {
+            const devices = await navigator.mediaDevices.enumerateDevices();
+            const videoDevices = devices.filter(device => device.kind === 'videoinput');
+            
+            videoDevices.forEach(device => {
+                const option = document.createElement('option');
+                option.value = device.deviceId;
+                option.text = device.label || `Camera ${cameraSelect.options.length}`;
+                cameraSelect.appendChild(option);
             });
+
+            if (videoDevices.length > 0) {
+                cameraSelect.disabled = false;
+            }
+        }
+
+        // Function to start video stream with selected camera
+        async function startVideoStream(deviceId) {
+            const constraints = {
+                video: {
+                    deviceId: deviceId ? { exact: deviceId } : undefined
+                }
+            };
+
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia(constraints);
+                video.srcObject = stream;
+            } catch (err) {
+                console.error('Error accessing camera: ', err);
+            }
+        }
+
+        // Initialize camera select and start default video stream
+        setupCameraSelect().then(() => {
+            startVideoStream(cameraSelect.value);
+        });
+
+        // Handle camera selection change
+        cameraSelect.addEventListener('change', () => {
+            startVideoStream(cameraSelect.value);
+        });
 
         // Handle video click to detect color
         video.addEventListener('click', (event) => {
@@ -207,9 +252,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
