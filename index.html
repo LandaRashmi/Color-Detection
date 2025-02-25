@@ -22,6 +22,7 @@
         }
 
         /* Navbar Styling */
+        /* Navbar Styling */
         .navbar {
             display: flex;
             justify-content: space-between;
@@ -34,17 +35,40 @@
             z-index: 1000;
         }
 
+        /* Navbar Heading (True Vision) */
+        .nav-heading {
+            font-size: 2em;
+            font-weight: 700;
+            color: #6e8efb; /* Highlight color */
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #ef25a1, #b20681);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 5px rgba(110, 142, 251, 0.5);
+            margin: 0;
+            padding: 5px 15px;
+            border-radius: 10px;
+        }
+
+              /* Navbar Links */
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
         .navbar a {
             color: #fff;
             text-decoration: none;
-            padding: 14px 20px;
-            transition: background 0.3s;
+            padding: 10px 15px;
+            transition:background 0.3s;
         }
 
         .navbar a:hover {
             background: rgba(255, 255, 255, 0.2);
             border-radius: 5px;
         }
+
 
         /* Header Section */
         .header {
@@ -84,6 +108,14 @@
             background: #4f70db;
             transform: translateY(-3px);
         }
+        /* Highlighted Caption */
+        .highlighted-caption {
+            background-color: #6e8efb; /* Adjust color as per your design */
+            padding: 5px 10px;
+            border-radius: 5px;
+            color: #fff; /* Text color */
+        }
+
 
         /* Features Section */
         .features {
@@ -138,6 +170,60 @@
             font-weight: bold;
             color: #f6f4f4;
         }
+        /* Use Cases Section */
+        .use-cases {
+            padding: 120px 40px;
+            background: rgba(180, 180, 180, 0.6);
+            background-image: url('img4.jpg'); /* Add a suitable background image */
+            background-position: center;
+            background-size: cover;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .use-cases h2 {
+            font-size: 2.8em;
+            margin-bottom: 50px;
+       }
+
+       .usecase-list {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .usecase-box {
+            background-color: rgba(0, 0, 0, 0.85);
+            padding: 30px;
+            border-radius: 15px;
+            width: 35%;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .usecase-box:hover {
+            transform: scale(1.07);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+        }
+
+        .usecase-box h3 {
+            font-weight: bold;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            color: #ffffff;
+        }
+
+        .usecase-box p {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #f6f4f4;
+            line-height: 1.6;
+        }
 
         
 
@@ -191,9 +277,13 @@
 <body>
     <!-- Navbar -->
     <nav class="navbar">
-        <a href="#home">Home</a>
-        <a href="#features">Features</a>
-        <a href="#techstack">Tech Stack</a>
+        <h1 class="nav-heading">True Vision</h1>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#features">Features</a>
+            <a href="#techstack">Tech Stack</a>
+            <a href="#usecases">UseCase</a>
+        </div>
     </nav>
 
     <!-- Header Section -->
@@ -238,6 +328,35 @@
     <section class="contact" id="techstack">
         <h2 class="boxx">Technologies Used :<br> HTML, CSS, JavaScript</h2>
     </section>
+    <!-- Use Cases Section -->
+    <section class="use-cases" id="usecases">
+        <div class="container">
+            <h2>Use Cases</h2>
+            <div class="usecase-list">
+                <div class="usecase-box">
+                    <h3>Graphic Designers</h3>
+                    <p>Helps designers pick perfect color combinations for UI/UX, branding, and marketing materials.</p>
+                </div>
+                <div class="usecase-box">
+                    <h3>Developers</h3>
+                    <p>Assists developers in selecting and converting colors between HEX, RGB, CMYK, and HSL.</p>
+                </div>
+                <div class="usecase-box">
+                    <h3>People with CVD (Color Vision Deficiency)</h3>
+                    <p>Simulates how colors appear to individuals with different types of color blindness.</p>
+                </div>
+                <div class="usecase-box">
+                    <h3>Artists & Content Creators</h3>
+                    <p>Helps digital artists and video editors choose accurate colors for their creative projects.</p>
+                </div>
+                <div class="usecase-box">
+                    <h3>E-commerce & Product Photography</h3>
+                   <p>Ensures product colors match accurately across digital platforms and real-world items.</p>
+                </div>
+           </div>
+        </div>
+    </section>
+
 
     <!-- Footer -->
     <footer class="footer">
